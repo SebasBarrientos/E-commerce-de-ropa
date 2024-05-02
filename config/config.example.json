@@ -4,7 +4,9 @@
     "password": "Tu contraseña",
     "database": "E-Commerse",
     "host": "127.0.0.1",
-    "dialect": "mysql"
+    "dialect": "mysql",
+    "jwt_secret": "mimamamemima"
+
   },
   "test": {
     "username": "root",
