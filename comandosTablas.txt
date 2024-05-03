@@ -4,12 +4,17 @@ sequelize model:generate --name User --attributes name:string,email:string,passw
 sequelize model:generate --name Order --attributes date:string,UserId:integer,dateOfOrder:date
 sequelize model:generate --name ProductsCategory --attributes ProductId:integer,CategoryId:integer
 sequelize model:generate --name OrdersProduct --attributes OrderId:integer,ProductId:integer
+sequelize model:generate --name Review --attributes title:string,text:string,ProductId:integer,UserId:integer
 
 sequelize model:generate --name Token --attributes token:string,UserId:integer
 
 
 nombre del modelo en singular (--name singular)
 
+
+Revisar tema de endpoints
+
+Ojo la ruta de reviews poner el autenticate
 
 
 

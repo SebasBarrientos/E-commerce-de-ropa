@@ -5,8 +5,8 @@ const router = express.Router()
 
 router.post("/",authentication, OrderController.create)
 router.get("/",OrderController.getAll)
-router.get("/id/:id",OrderController.getById)
-router.get("/title/:title",OrderController.getByTitle)
+// router.get("/id/:id",OrderController.getById)
+// router.get("/title/:title",OrderController.getByTitle)
 router.delete("/id/:id",OrderController.delete)
 
 module.exports = router

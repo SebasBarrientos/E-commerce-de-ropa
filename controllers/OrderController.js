@@ -1,4 +1,4 @@
-const { Order, User, Sequelize } = require('../models/index.js');
+const { Order, User, Product, Sequelize } = require('../models/index.js');
 const { Op } = Sequelize;
 
 const OrderController = {
@@ -6,6 +6,7 @@ const OrderController = {
         try {
             req.body.UserId = req.user.id //el UserId va a ser el del usuario logueadeo
             const order = await Order.create(req.body);
+            order.addProduct(req.body.ProductId);
             res.status(201).send({ msg: "Orden creada exitosamente", order });
         } catch (error) {
             console.error(error);
@@ -16,40 +17,42 @@ const OrderController = {
         try {
             const orders = await Order.findAll({
                 include: [{ model: User, attributes: ["name", "email"] }],
-            });
+                include: [{ 
+                    model: Product, attributes: ["name"], through: { attributes: [] } }]
+            }); 
             res.send(orders);
         } catch (error) {
             console.error(error);
             res.status(500).send(error);
         }
     },
-    async getById(req, res) {
-        try {
-            const order = await Order.findByPk(req.params.id, {
-                include: [{ model: User, attributes: ["name", "email"] }],
-            });
-            res.send(order);
-        } catch (error) {
-            console.error(error);
-            res.status(500).send(error);
-        }
-    },
+    // async getById(req, res) {
+    //     try {
+    //         const order = await Order.findByPk(req.params.id, {
+    //             include: [{ model: User, attributes: ["name", "email"] }],
+    //         });
+    //         res.send(order);
+    //     } catch (error) {
+    //         console.error(error);
+    //         res.status(500).send(error);
+    //     }
+    // },
 
-    async getByTitle(req, res) {
-        try {
-            const order = await Order.findAll({
-                where: {
-                    title: {
-                        [Op.like]: `%${req.params.title}%`,
-                    },
-                },
-            });
-            res.send(order);
-        } catch (error) {
-            console.error(error);
-            res.status(500).send(error);
-        }
-    },
+    // async getByTitle(req, res) {
+    //     try {
+    //         const order = await Order.findAll({
+    //             where: {
+    //                 title: {
+    //                     [Op.like]: `%${req.params.title}%`,
+    //                 },
+    //             },
+    //         });
+    //         res.send(order);
+    //     } catch (error) {
+    //         console.error(error);
+    //         res.status(500).send(error);
+    //     }
+    // },
     async delete(req, res) {
         try {
             await Order.destroy({

@@ -8,14 +8,60 @@ module.exports = (sequelize, DataTypes) => {
       Product.belongsToMany(models.Category, {
         through: models.ProductsCategory
       })
-    }
+      Product.belongsToMany(models.Order, {
+        through: models.OrdersProduct
+      })
+      Product.hasMany(models.Review)
+
   }
+}
   Product.init({
-    name: DataTypes.STRING,
-    description: DataTypes.STRING,
-    size: DataTypes.STRING,
-    price: DataTypes.DECIMAL,
-    stock: DataTypes.INTEGER
+    name: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      validate: {
+        notNull: {
+          msg: "Por favor introduce el nombre del producto",
+        },
+      },
+    },
+
+    description: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      validate: {
+        notNull: {
+          msg: "Por favor introduce la descripción",
+        },
+      },
+    },
+    size: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      validate: {
+        notNull: {
+          msg: "Por favor introduce la talla",
+        },
+      },
+    },
+    price: {
+      type: DataTypes.DECIMAL,
+      allowNull: false,
+      validate: {
+        notNull: {
+          msg: "Por favor introduce el precio",
+        },
+      },
+    },
+    stock: {
+      type:  DataTypes.INTEGER,
+      allowNull: false,
+      validate: {
+        notNull: {
+          msg: "Por favor introduce el stock",
+        },
+      },
+    },
   }, {
     sequelize,
     modelName: 'Product',
