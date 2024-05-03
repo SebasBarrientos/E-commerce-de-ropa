@@ -5,8 +5,13 @@ sequelize model:generate --name Order --attributes date:string,UserId:integer,da
 sequelize model:generate --name ProductsCategory --attributes ProductId:integer,CategoryId:integer
 sequelize model:generate --name OrdersProduct --attributes OrderId:integer,ProductId:integer
 
-Crear tabla de token
+sequelize model:generate --name Token --attributes token:string,UserId:integer
 
 
 nombre del modelo en singular (--name singular)
 
+
+
+
+Hacer para el front una plantilla 
+y para los objetos un estilo canva
