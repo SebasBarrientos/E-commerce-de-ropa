@@ -17,6 +17,6 @@ Revisar tema de endpoints
 Ojo la ruta de reviews poner el autenticate
 
 
-
+hacer un archivo js donde este la funcion de logout e importarla en todos los otros js
 Hacer para el front una plantilla 
 y para los objetos un estilo canva

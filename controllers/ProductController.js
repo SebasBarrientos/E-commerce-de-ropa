@@ -4,9 +4,10 @@ const { Product, Category, ProductsCategory } = require('../models/index.js');
 const ProductController = {
     async create(req, res) {
         try {
+            console.log("HOLAAAAAAA", req.file);
             const product = await Product.create(req.body);
             product.addCategory(req.body.CategoryId);
-            res.status(201).send({ msg: "Usuario creado con éxito", product });
+            res.status(201).send({ msg: "Item creado con éxito", product });
         } catch (error) {
             console.error(error);
             res.status(500).send(error);
