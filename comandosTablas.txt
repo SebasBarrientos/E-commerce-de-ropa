@@ -7,6 +7,7 @@ sequelize model:generate --name OrdersProduct --attributes OrderId:integer,Produ
 sequelize model:generate --name Review --attributes title:string,text:string,ProductId:integer,UserId:integer
 
 sequelize model:generate --name Token --attributes token:string,UserId:integer
+sequelize migration:generate --name image
 
 
 nombre del modelo en singular (--name singular)
@@ -17,6 +18,9 @@ Revisar tema de endpoints
 Ojo la ruta de reviews poner el autenticate
 
 
+
+
+-------------Front
 hacer un archivo js donde este la funcion de logout e importarla en todos los otros js
-Hacer para el front una plantilla 
-y para los objetos un estilo canva
+Multer en el log vemos como me devuelve el nombre del file. Ahora resta crear un campo para hacer el path...
+                    hay que tirar la tabla y levantar

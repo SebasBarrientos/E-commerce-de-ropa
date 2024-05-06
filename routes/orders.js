@@ -3,7 +3,7 @@ const { authentication } = require("../middleware/authentication")
 const OrderController = require("../controllers/OrderController")
 const router = express.Router()
 
-router.post("/",authentication, OrderController.create)
+router.post("/",authentication, OrderController.create) // ACA IRIA EL EMAIL DE CONFIRMACION
 router.get("/",OrderController.getAll)
 // router.get("/id/:id",OrderController.getById)
 // router.get("/title/:title",OrderController.getByTitle)

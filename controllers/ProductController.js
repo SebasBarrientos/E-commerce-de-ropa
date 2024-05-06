@@ -4,9 +4,14 @@ const { Product, Category, ProductsCategory } = require('../models/index.js');
 const ProductController = {
     async create(req, res) {
         try {
-            console.log("HOLAAAAAAA", req.file);
-            const product = await Product.create(req.body);
+           const image=req.file.path;
+            console.log(req.body);
+            // const product = await Product.create(req.body);
+            const product = await Product.create({ ...req.body, image});
+            console.log(product);
+            
             product.addCategory(req.body.CategoryId);
+
             res.status(201).send({ msg: "Item creado con éxito", product });
         } catch (error) {
             console.error(error);
@@ -26,7 +31,8 @@ const ProductController = {
     },
     async updateById(req, res) {
         try {
-            await Product.update(req.body, {
+            const image=req.file.path;
+            await Product.update({ ...req.body, image}, {
                 where: {
                     id: req.params.id,
                 },
@@ -52,7 +58,7 @@ const ProductController = {
                 },
             });
             res.send("El producto ha sido eliminado con éxito");
-            
+
         } catch (error) {
             console.error(error);
             res.status(500).send(error);
@@ -60,7 +66,7 @@ const ProductController = {
     },
     async getById(req, res) {
         try {
-            const product = await Product.findByPk(req.params.id, {include: [{ model: Category, attributes: ["name"], through: { attributes: [] } }]});
+            const product = await Product.findByPk(req.params.id, { include: [{ model: Category, attributes: ["name"], through: { attributes: [] } }] });
             res.send(product);
         } catch (error) {
             console.error(error);
@@ -72,7 +78,7 @@ const ProductController = {
             const product = await Product.findAll({
                 where: {
                     name: req.params.name,
-                },include: [{ model: Category, attributes: ["name"], through: { attributes: [] } }]
+                }, include: [{ model: Category, attributes: ["name"], through: { attributes: [] } }]
             });
             res.send(product);
         } catch (error) {
@@ -85,7 +91,7 @@ const ProductController = {
             const product = await Product.findAll({
                 where: {
                     price: req.query.price,
-                },include: [{ model: Category, attributes: ["name"], through: { attributes: [] } }]
+                }, include: [{ model: Category, attributes: ["name"], through: { attributes: [] } }]
             });
             res.send(product);
         } catch (error) {
@@ -96,7 +102,7 @@ const ProductController = {
     async getAllOrderByPrice(req, res) {
         try {
             const product = await Product.findAll({
-                include: [{ model: Category, attributes: ["name"], through: { attributes: [] }}],
+                include: [{ model: Category, attributes: ["name"], through: { attributes: [] } }],
                 order: [['price', 'DESC']]
             })
             res.send({ msg: "Todos los productos", product })
