@@ -47,9 +47,13 @@ const UserController = {
   },
   async update(req, res) {
     try {
-      await User.update(req.body, {
+      const userUpdated ={
+        name:req.body.name,
+        email:req.body.email
+      }
+      await User.update(userUpdated, {
         where: {
-          id: req.params.id,
+          id: req.user.id,
         },
       });
       res.send("Usuario actualizado con éxito");
