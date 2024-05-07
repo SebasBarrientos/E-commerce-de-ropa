@@ -7,24 +7,17 @@ const ProductController = {
             if (!req.file) {
                 const image = ""
                 console.log(req.body);
-                // const product = await Product.create(req.body);
                 const product = await Product.create({ ...req.body, image });
                 console.log(product);
-
                 product.addCategory(req.body.CategoryId);
-
                 res.status(201).send({ msg: "Item creado con éxito", product });
             } else {
                 const image = req.file.path;
                 console.log(req.body);
-                // const product = await Product.create(req.body);
                 const product = await Product.create({ ...req.body, image });
                 console.log(product);
-
                 product.addCategory(req.body.CategoryId);
-
                 res.status(201).send({ msg: "Item creado con éxito", product });
-
             }
         } catch (error) {
             console.error(error);
@@ -53,7 +46,7 @@ const ProductController = {
                 });
                 const product = await Product.findByPk(req.params.id)
                 product.setCategories(req.body.CategoryId);
-                res.send({ msg: "Producto actualizado con éxito"});
+                res.send({ msg: "Producto actualizado con éxito" });
             } else {
                 const image = req.file.path;
                 await Product.update({ ...req.body, image }, {
@@ -63,8 +56,7 @@ const ProductController = {
                 });
                 const product = await Product.findByPk(req.params.id)
                 product.setCategories(req.body.CategoryId);
-                res.send({ msg: "Producto actualizado con éxito"});
-                
+                res.send({ msg: "Producto actualizado con éxito" });
             }
         } catch (error) {
             console.error(error);
@@ -93,7 +85,7 @@ const ProductController = {
     async getById(req, res) {
         try {
             const product = await Product.findByPk(req.params.id, { include: [{ model: Category, attributes: ["name"], through: { attributes: [] } }] });
-            res.send({msg:"Producto encontrado",product});
+            res.send({ msg: "Producto encontrado", product });
         } catch (error) {
             console.error(error);
             res.status(500).send(error);
@@ -106,7 +98,7 @@ const ProductController = {
                     name: req.params.name,
                 }, include: [{ model: Category, attributes: ["name"], through: { attributes: [] } }]
             });
-            res.send({msg:"Producto encontrado",product});
+            res.send({ msg: "Producto encontrado", product });
         } catch (error) {
             console.error(error);
             res.status(500).send(error);
@@ -119,7 +111,7 @@ const ProductController = {
                     price: req.query.price,
                 }, include: [{ model: Category, attributes: ["name"], through: { attributes: [] } }]
             });
-            res.send({msg:"Producto encontrado",product});
+            res.send({ msg: "Producto encontrado", product });
         } catch (error) {
             console.error(error);
             res.status(500).send(error);

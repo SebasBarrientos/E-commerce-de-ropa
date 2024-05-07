@@ -5,7 +5,7 @@ const transporter = require("../config/nodemailer");
 const OrderController = {
     async create(req, res) {
         try {
-            req.body.UserId = req.user.id //el UserId va a ser el del usuario logueadeo
+            req.body.UserId = req.user.id 
             const order = await Order.create(req.body);
             console.log(req.user.id);
             console.log(req.user.email);
@@ -39,33 +39,7 @@ const OrderController = {
             res.status(500).send(error);
         }
     },
-    // async getById(req, res) {
-    //     try {
-    //         const order = await Order.findByPk(req.params.id, {
-    //             include: [{ model: User, attributes: ["name", "email"] }],
-    //         });
-    //         res.send(order);
-    //     } catch (error) {
-    //         console.error(error);
-    //         res.status(500).send(error);
-    //     }
-    // },
 
-    // async getByTitle(req, res) {
-    //     try {
-    //         const order = await Order.findAll({
-    //             where: {
-    //                 title: {
-    //                     [Op.like]: `%${req.params.title}%`,
-    //                 },
-    //             },
-    //         });
-    //         res.send(order);
-    //     } catch (error) {
-    //         console.error(error);
-    //         res.status(500).send(error);
-    //     }
-    // },
     async delete(req, res) {
         try {
             await Order.destroy({

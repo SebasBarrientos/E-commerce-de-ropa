@@ -34,11 +34,7 @@ const UserController = {
           id: req.params.id,
         },
       });
-      //   await Post.destroy({                       ACA VA EL ORDER DESTROY
-      //     where: {
-      //       UserId: req.params.id,
-      //     },
-      //   });
+
       res.send("El usuario ha sido eliminado con éxito");
     } catch (error) {
       console.error(error);
@@ -64,8 +60,6 @@ const UserController = {
   },
   async getById(req, res) {
     try {
-      //el UserId va a ser el del usuario logueadeo
-
       const user = await User.findByPk(req.user.id, {
         include: [{
             model: Order, attributes: ["id"],

@@ -4,7 +4,7 @@ const { Op } = Sequelize;
 const ReviewController = {
     async create(req, res) {
         try {
-            req.body.UserId = req.user.id //el UserId va a ser el del usuario logueadeo
+            req.body.UserId = req.user.id 
             const review = await Review.create(req.body);
             res.status(201).send({ msg: "Crítica creada exitosamente", review });
         } catch (error) {

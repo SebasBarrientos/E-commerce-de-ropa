@@ -11,7 +11,7 @@ describe("tester", () => {
             Product.destroy({ where: {}, truncate: true }),
             Category.destroy({ where: {}, truncate: true }),
             Review.destroy({ where: {}, truncate: true }),
-            Order.destroy({ where: {}, truncate: true }); //truncate tabla users
+            Order.destroy({ where: {}, truncate: true }); 
     });
     const user = {
         name: "Username",
@@ -196,7 +196,6 @@ describe("tester", () => {
         const updateProduct = {
             name: "cambio de nombre"
         };
-
         const res = await request(app)
             .put("/products/id/1")
             .send(updateProduct)
@@ -222,7 +221,6 @@ describe("tester", () => {
             id: res.body.category.id,
             createdAt: res.body.category.createdAt,
             updatedAt: res.body.category.updatedAt,
-
         };
         const newCategory = res.body.category;
         expect({ ...newCategory }).toEqual(sendCategory);
