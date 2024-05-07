@@ -4,15 +4,28 @@ const { Product, Category, ProductsCategory } = require('../models/index.js');
 const ProductController = {
     async create(req, res) {
         try {
-           const image=req.file.path;
-            console.log(req.body);
-            // const product = await Product.create(req.body);
-            const product = await Product.create({ ...req.body, image});
-            console.log(product);
-            
-            product.addCategory(req.body.CategoryId);
+            if (!req.file) {
+                const image = ""
+                console.log(req.body);
+                // const product = await Product.create(req.body);
+                const product = await Product.create({ ...req.body, image });
+                console.log(product);
 
-            res.status(201).send({ msg: "Item creado con éxito", product });
+                product.addCategory(req.body.CategoryId);
+
+                res.status(201).send({ msg: "Item creado con éxito", product });
+            } else {
+                const image = req.file.path;
+                console.log(req.body);
+                // const product = await Product.create(req.body);
+                const product = await Product.create({ ...req.body, image });
+                console.log(product);
+
+                product.addCategory(req.body.CategoryId);
+
+                res.status(201).send({ msg: "Item creado con éxito", product });
+
+            }
         } catch (error) {
             console.error(error);
             res.status(500).send(error);
@@ -31,15 +44,28 @@ const ProductController = {
     },
     async updateById(req, res) {
         try {
-            const image=req.file.path;
-            await Product.update({ ...req.body, image}, {
-                where: {
-                    id: req.params.id,
-                },
-            });
-            const product = await Product.findByPk(req.params.id)
-            product.setCategories(req.body.CategoryId);
-            res.send("Producto actualizado con éxito");
+            if (!req.file) {
+                const image = ""
+                await Product.update({ ...req.body, image }, {
+                    where: {
+                        id: req.params.id,
+                    },
+                });
+                const product = await Product.findByPk(req.params.id)
+                product.setCategories(req.body.CategoryId);
+                res.send({ msg: "Producto actualizado con éxito"});
+            } else {
+                const image = req.file.path;
+                await Product.update({ ...req.body, image }, {
+                    where: {
+                        id: req.params.id,
+                    },
+                });
+                const product = await Product.findByPk(req.params.id)
+                product.setCategories(req.body.CategoryId);
+                res.send({ msg: "Producto actualizado con éxito"});
+                
+            }
         } catch (error) {
             console.error(error);
             res.status(500).send(error);
