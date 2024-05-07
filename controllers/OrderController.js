@@ -1,12 +1,25 @@
 const { Order, User, Product, Sequelize } = require('../models/index.js');
 const { Op } = Sequelize;
+const transporter = require("../config/nodemailer");
 
 const OrderController = {
     async create(req, res) {
         try {
             req.body.UserId = req.user.id //el UserId va a ser el del usuario logueadeo
             const order = await Order.create(req.body);
+            console.log(req.user.id);
+            console.log(req.user.email);
             order.addProduct(req.body.ProductId);
+            await transporter.sendMail({
+                to: req.user.email,
+                subject: "Orden creada exitosamente",
+                html: `<h3> Hemos recibido tu orden!</h3>
+                <p>Podras saber mas si te contactas con nosotros. Compartenos este numero que es tu Usuario: ${req.user.id}. Con el rastrearemos tu pedido </p>
+                <p> En la brevedad te llegara un correo con la fecha estimada en la que lo recibiras </p>
+                <p> En caso de que en mas de 3 dias no te llegue nada, agradecemos tu donacion! </p>
+                `,
+              });
+        
             res.status(201).send({ msg: "Orden creada exitosamente", order });
         } catch (error) {
             console.error(error);

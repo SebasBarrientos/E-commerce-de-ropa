@@ -1,12 +1,13 @@
 {
   "development": {
-    "username": "Tu User",
-    "password": "Tu contraseña",
-    "database": "E-Commerse",
+    "username": "tu usuario",
+    "password": "tu contra",
+    "database": "database_development",
     "host": "127.0.0.1",
     "dialect": "mysql",
-    "jwt_secret": "mimamamemima"
-
+    "jwt_secret":"tu mama te mima",
+    "user": "tu correo",
+    "pass": "tu contra"
   },
   "test": {
     "username": "root",
