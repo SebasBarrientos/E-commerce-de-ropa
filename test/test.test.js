@@ -13,7 +13,6 @@ describe("tester", () => {
             Review.destroy({ where: {}, truncate: true }),
             Order.destroy({ where: {}, truncate: true }); //truncate tabla users
     });
-
     const user = {
         name: "Username",
         email: "sebas33696@gmail.com",
@@ -51,8 +50,6 @@ describe("tester", () => {
         const newUser = res.body.user;
         expect(newUser).toEqual(sendUser);
     });
-
-
     let token;
     test("Login a user", async () => {
         const res = await request(app)
@@ -73,7 +70,6 @@ describe("tester", () => {
             name: "Username",
             email: "sebas33696@gmail.com",
         };
-
         const res = await request(app)
             .put("/users")
             .send(updateUser)
@@ -81,17 +77,17 @@ describe("tester", () => {
             .expect(200);
         expect(res.text).toBe("Usuario actualizado con éxito");
     });
-    // test("Create Order", async () => {
-    //     const order = {
-    //         "date": "2024-05-02",
-    //         "ProductId": [4, 6, 8]
-    //     }
-    //     const res = await request(app)
-    //         .post("/orders")
-    //         .set({ Authorization: token })
-    //         .expect(201);
-    //     expect(res.body.msg).toBe("Orden creada exitosamente");
-    // });
+    test("Create Order", async () => {
+        const order = {
+            "date": "2024-05-02",
+            "ProductId": [4, 6, 8]
+        }
+        const res = await request(app)
+            .post("/orders")
+            .set({ Authorization: token })
+            .expect(201);
+        expect(res.body.msg).toBe("Orden creada exitosamente");
+    });
     test("Create a review", async () => {
         const res = await request(app)
             .post("/reviews")
@@ -114,8 +110,6 @@ describe("tester", () => {
             .expect(200)
         expect(res.body.msg).toBe("Todas las reviews");
     });
-
-
     test("Update your review", async () => {
         const updateReview = {
             title: "Desastroso",
@@ -128,9 +122,6 @@ describe("tester", () => {
             .expect(200);
         expect(res.body.msg).toBe("Crítica actualizada con éxito");
     });
-
-
-
     test("LogOut a user", async () => {
         const res = await request(app)
             .delete("/users/logout")
@@ -176,6 +167,30 @@ describe("tester", () => {
             .get("/products")
             .expect(200)
         expect(res.body.msg).toBe("Todos los productos");
+    });
+    test("Get all in order", async () => {
+        const res = await request(app)
+            .get("/products/price/order")
+            .expect(200)
+        expect(res.body.msg).toBe("Todos los productos");
+    });
+    test("Get product by ID", async () => {
+        const res = await request(app)
+            .get("/products/id/1")
+            .expect(200)
+        expect(res.body.msg).toBe("Producto encontrado");
+    });
+    test("Get product by name", async () => {
+        const res = await request(app)
+            .get("/products/name/Pantalon")
+            .expect(200)
+        expect(res.body.msg).toBe("Producto encontrado");
+    });
+    test("Get product by price", async () => {
+        const res = await request(app)
+            .get("/products/price?price=19.99")
+            .expect(200)
+        expect(res.body.msg).toBe("Producto encontrado");
     });
     test("Update product by id", async () => {
         const updateProduct = {
@@ -244,13 +259,6 @@ describe("tester", () => {
             .expect(200);
         expect(res.body.msg).toBe("Categoría actualizada con éxito");
     });
-
-
-
-
-
-
-    //Delete
     test("Delete a product", async () => {
         const res = await request(app)
             .delete("/products/id/1")

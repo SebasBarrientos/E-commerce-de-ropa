@@ -93,7 +93,7 @@ const ProductController = {
     async getById(req, res) {
         try {
             const product = await Product.findByPk(req.params.id, { include: [{ model: Category, attributes: ["name"], through: { attributes: [] } }] });
-            res.send(product);
+            res.send({msg:"Producto encontrado",product});
         } catch (error) {
             console.error(error);
             res.status(500).send(error);
@@ -106,7 +106,7 @@ const ProductController = {
                     name: req.params.name,
                 }, include: [{ model: Category, attributes: ["name"], through: { attributes: [] } }]
             });
-            res.send(product);
+            res.send({msg:"Producto encontrado",product});
         } catch (error) {
             console.error(error);
             res.status(500).send(error);
@@ -119,7 +119,7 @@ const ProductController = {
                     price: req.query.price,
                 }, include: [{ model: Category, attributes: ["name"], through: { attributes: [] } }]
             });
-            res.send(product);
+            res.send({msg:"Producto encontrado",product});
         } catch (error) {
             console.error(error);
             res.status(500).send(error);
