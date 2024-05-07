@@ -33,7 +33,7 @@ const OrderController = {
                 include: [{ 
                     model: Product, attributes: ["name"], through: { attributes: [] } }]
             }); 
-            res.send(orders);
+            res.send({ msg: "Ordenes existentes",orders});
         } catch (error) {
             console.error(error);
             res.status(500).send(error);

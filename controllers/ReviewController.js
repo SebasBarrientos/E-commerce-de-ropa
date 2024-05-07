@@ -16,11 +16,9 @@ const ReviewController = {
         try {
             const reviews = await Review.findAll({
                 include: [{ model: User, attributes: ["name"] }], include: [{ model: Product, attributes: ["name","description"] }],
-//ARREGLAR ESTE ERROR SOLO ME MUESTRA EL Producto, no user!
-
 
             }); 
-            res.send(reviews);
+            res.send({ msg: "Todas las reviews", reviews});
         } catch (error) {
             console.error(error);
             res.status(500).send(error);
@@ -33,7 +31,7 @@ const ReviewController = {
                     id: req.params.id,
                 },
             });
-            res.send("Crítica actualizada con éxito");
+            res.send({ msg: "Crítica actualizada con éxito"});
         } catch (error) {
             console.error(error);
             res.status(500).send(error);
@@ -46,7 +44,7 @@ const ReviewController = {
                     id: req.params.id,
                 },
             });
-            res.send("Crítica eliminada");
+            res.send({ msg: "Crítica eliminada"});
         } catch (error) {
             console.error(error);
             res.status(500).send(error);

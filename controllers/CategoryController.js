@@ -27,7 +27,7 @@ const CategoryController = {
                     id: req.params.id,
                 },
             });
-            res.send("Categoría actualizada con éxito");
+            res.send({msg:"Categoría actualizada con éxito"});
         } catch (error) {
             console.error(error);
             res.status(500).send(error);
@@ -55,7 +55,7 @@ const CategoryController = {
     async getById(req, res) {
         try {
             const category = await Category.findByPk(req.params.id, { include: [{ model: Product, attributes: ["name"], through: { attributes: [] } }] });
-            res.send(category);
+            res.send({msg:"Categoria encontrada", category});
         } catch (error) {
             console.error(error);
             res.status(500).send(error);
@@ -68,7 +68,7 @@ const CategoryController = {
                     name: req.params.name,
                 }, include: [{ model: Product, attributes: ["name"], through: { attributes: [] } }]
             });
-            res.send(category);
+            res.send({msg:"Categoria encontrada", category});
         } catch (error) {
             console.error(error);
             res.status(500).send(error);

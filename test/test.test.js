@@ -1,13 +1,17 @@
 const request = require("supertest");
 const app = require("../index");
-const { User, Product } = require("../models/index");
+const { User, Product, Category, Review, Order } = require("../models/index");
 const jwt = require("jsonwebtoken");
 const { jwt_secret } = require("../config/config.json")["development"];
 
 describe("tester", () => {
     afterAll(() => {
 
-        return User.destroy({ where: { role: "user" } }), Product.destroy({ where: {}, truncate: true }); //truncate tabla users
+        return User.destroy({ where: { role: "user" } }),
+            Product.destroy({ where: {}, truncate: true }),
+            Category.destroy({ where: {}, truncate: true }),
+            Review.destroy({ where: {}, truncate: true }),
+            Order.destroy({ where: {}, truncate: true }); //truncate tabla users
     });
 
     const user = {
@@ -24,7 +28,14 @@ describe("tester", () => {
         stock: 20,
         CategoryId: 2
     }
-
+    const review = {
+        title: "Pantalon",
+        text: "El peor pantalon que he comprado en mi vida",
+        ProductId: 4
+    }
+    const category = {
+        name: "Pantalones"
+    }
     test("Create a user", async () => {
         const res = await request(app)
             .post("/users")
@@ -70,24 +81,53 @@ describe("tester", () => {
             .expect(200);
         expect(res.text).toBe("Usuario actualizado con éxito");
     });
-    test("Create Order", async () => {
-        const order = {
-            "date": "2024-05-02",
-            "ProductId": [4, 6, 8]
-        }
-        const res = await request(app)
-            .post("/orders")
-            .set({ Authorization: token })
-            .expect(201);
-        expect(res.body.msg).toBe("Orden creada exitosamente");
-    });
-    // test("Delete a user", async () => {
+    // test("Create Order", async () => {
+    //     const order = {
+    //         "date": "2024-05-02",
+    //         "ProductId": [4, 6, 8]
+    //     }
     //     const res = await request(app)
-    //         .delete("/users/id/2")
-    //         .set({ Authorization: tokenAdmin })
-    //         .expect(200);
-    //     expect(res.text).toBe("El usuario ha sido eliminado con éxito");
+    //         .post("/orders")
+    //         .set({ Authorization: token })
+    //         .expect(201);
+    //     expect(res.body.msg).toBe("Orden creada exitosamente");
     // });
+    test("Create a review", async () => {
+        const res = await request(app)
+            .post("/reviews")
+            .send(review)
+            .set({ Authorization: token })
+            .expect(201)
+        const sendReview = {
+            ...review,
+            id: res.body.review.id,
+            UserId: res.body.review.UserId,
+            createdAt: res.body.review.createdAt,
+            updatedAt: res.body.review.updatedAt,
+        };
+        const newReview = res.body.review;
+        expect(newReview).toEqual(sendReview);
+    });
+    test("Get all reviews", async () => {
+        const res = await request(app)
+            .get("/reviews")
+            .expect(200)
+        expect(res.body.msg).toBe("Todas las reviews");
+    });
+
+
+    test("Update your review", async () => {
+        const updateReview = {
+            title: "Desastroso",
+        };
+
+        const res = await request(app)
+            .put("/reviews/id/1")
+            .send(updateReview)
+            .set({ Authorization: token })
+            .expect(200);
+        expect(res.body.msg).toBe("Crítica actualizada con éxito");
+    });
 
 
 
@@ -149,6 +189,68 @@ describe("tester", () => {
             .expect(200);
         expect(res.body.msg).toBe("Producto actualizado con éxito");
     });
+    test("Get all orders", async () => {
+        const res = await request(app)
+            .get("/orders")
+            .set({ Authorization: tokenAdmin })
+            .expect(200)
+        expect(res.body.msg).toBe("Ordenes existentes");
+    });
+    test("Create category", async () => {
+        const res = await request(app)
+            .post("/categories")
+            .send(category)
+            .set({ Authorization: tokenAdmin })
+            .expect(201)
+        const sendCategory = {
+            ...category,
+            id: res.body.category.id,
+            createdAt: res.body.category.createdAt,
+            updatedAt: res.body.category.updatedAt,
+
+        };
+        const newCategory = res.body.category;
+        expect({ ...newCategory }).toEqual(sendCategory);
+    });
+    test("Get all categories", async () => {
+        const res = await request(app)
+            .get("/categories")
+            .expect(200)
+        expect(res.body.msg).toBe("Todas las categorias");
+    });
+    test("Search category by ID", async () => {
+        const res = await request(app)
+            .get("/categories/id/1")
+            .set({ Authorization: token })
+            .expect(200);
+        expect(res.body.msg).toBe("Categoria encontrada");
+    });
+    test("Search category by Name", async () => {
+        const res = await request(app)
+            .get("/categories/name/Pantalones")
+            .set({ Authorization: token })
+            .expect(200);
+        expect(res.body.msg).toBe("Categoria encontrada");
+    });
+    test("Update category", async () => {
+        const updateCategory = {
+            name: "Pantalon",
+        };
+
+        const res = await request(app)
+            .put("/categories/id/1")
+            .send(updateCategory)
+            .set({ Authorization: tokenAdmin })
+            .expect(200);
+        expect(res.body.msg).toBe("Categoría actualizada con éxito");
+    });
+
+
+
+
+
+
+    //Delete
     test("Delete a product", async () => {
         const res = await request(app)
             .delete("/products/id/1")
@@ -156,7 +258,27 @@ describe("tester", () => {
             .expect(200);
         expect(res.text).toBe("El producto ha sido eliminado con éxito");
     });
-
+    test("Delete a review", async () => {
+        const res = await request(app)
+            .delete("/reviews/id/1")
+            .set({ Authorization: tokenAdmin })
+            .expect(200);
+        expect(res.body.msg).toBe("Crítica eliminada");
+    });
+    test("Delete an order", async () => {
+        const res = await request(app)
+            .delete("/orders/id/1")
+            .set({ Authorization: tokenAdmin })
+            .expect(200);
+        expect(res.text).toBe("El pedido ha sido eliminado con éxito");
+    });
+    test("Delete a category", async () => {
+        const res = await request(app)
+            .delete("/categories/id/1")
+            .set({ Authorization: tokenAdmin })
+            .expect(200);
+        expect(res.text).toBe("Categoria eliminada con éxito");
+    });
 });
 
 
