@@ -6,16 +6,12 @@ const ProductController = {
         try {
             if (!req.file) {
                 const image = ""
-                console.log(req.body);
                 const product = await Product.create({ ...req.body, image });
-                console.log(product);
                 product.addCategory(req.body.CategoryId);
                 res.status(201).send({ msg: "Item creado con éxito", product });
             } else {
                 const image = req.file.path;
-                console.log(req.body);
                 const product = await Product.create({ ...req.body, image });
-                console.log(product);
                 product.addCategory(req.body.CategoryId);
                 res.status(201).send({ msg: "Item creado con éxito", product });
             }

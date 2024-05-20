@@ -6,7 +6,6 @@ const { jwt_secret } = require("../config/config.json")["development"];
 
 describe("tester", () => {
     afterAll(() => {
-
         return User.destroy({ where: { role: "user" } }),
             Product.destroy({ where: {}, truncate: true }),
             Category.destroy({ where: {}, truncate: true }),

@@ -7,8 +7,7 @@ const OrderController = {
         try {
             req.body.UserId = req.user.id 
             const order = await Order.create(req.body);
-            console.log(req.user.id);
-            console.log(req.user.email);
+
             order.addProduct(req.body.ProductId);
             await transporter.sendMail({
                 to: req.user.email,
