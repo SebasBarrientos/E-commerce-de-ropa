@@ -1,8 +1,7 @@
 const request = require("supertest");
 const app = require("../index");
 const { User, Product, Category, Review, Order } = require("../models/index");
-const jwt = require("jsonwebtoken");
-const { jwt_secret } = require("../config/config.json")["development"];
+
 
 describe("tester", () => {
     afterAll(() => {
@@ -83,6 +82,7 @@ describe("tester", () => {
         }
         const res = await request(app)
             .post("/orders")
+            .send (order)
             .set({ Authorization: token })
             .expect(201);
         expect(res.body.msg).toBe("Orden creada exitosamente");
